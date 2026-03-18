@@ -1,101 +1,35 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contrast Klok</title>
     <style>
-        :root {
-            /* Diep donkere achtergrond voor maximaal contrast */
-            --bg-color: #000000; /* Zwart */
-            /* Fel, neon-blauw voor de tekst */
-            --text-color: #00ffff; /* Cyaan/Neon-blauw */
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            /* Een strakker, modern lettertype (Monospace) */
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        /* Force a black background and bright cyan text */
+        html, body {
+            background-color: #000000 !important;
+            color: #00ffff !important;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            /* Subtiele animatie bij het laden */
-            animation: fadeIn 1s;
+            font-family: sans-serif;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .clock-container {
-            text-align: center;
-        }
-
-        #local-time {
-            /* Groot en indrukwekkend */
-            font-size: 15vw; 
-            font-weight: 800;
-            margin: 0;
-            line-height: 1;
-            letter-spacing: -2px;
-            /* Zorgt dat de cijfers scherp blijven */
-            -webkit-font-smoothing: antialiased;
-            /* Subtiele gloed voor het neon-effect */
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-        }
-
-        .date-display {
-            /* Subtieler dan de klok, maar goed leesbaar */
-            font-size: 2vw;
-            text-transform: uppercase;
-            letter-spacing: 0.6rem;
-            opacity: 0.9; /* Iets minder fel dan de klok voor hiërarchie */
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        /* Aanpassingen voor mobiele schermen */
-        @media (max-width: 768px) {
-            #local-time { 
-                font-size: 20vw; 
-                letter-spacing: -1px;
-            }
-            .date-display { 
-                font-size: 4vw; 
-                letter-spacing: 0.3rem;
-                margin-bottom: 1rem;
-            }
+        #clock {
+            font-size: 15vw;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-
-    <div class="clock-container">
-        <div class="date-display" id="date">LADEN...</div>
-        <h1 id="local-time">00:00:00</h1>
-    </div>
+    <div id="clock">00:00:00</div>
 
     <script>
-        function updateClock() {
+        function update() {
             const now = new Date();
-
-            // Tijd formatteren (HH:MM:SS) in Nederlandse stijl
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            document.getElementById('local-time').textContent = now.toLocaleTimeString('nl-NL', timeOptions);
-            
-            // Datum formatteren (dag, dd maand jjjj)
-            const dateOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            document.getElementById('date').textContent = now.toLocaleDateString('nl-NL', dateOptions);
+            document.getElementById('clock').innerHTML = now.toLocaleTimeString();
         }
-
-        // Start direct en update elke seconde
-        updateClock();
-        setInterval(updateClock, 1000);
+        setInterval(update, 1000);
+        update();
     </script>
 </body>
 </html>
