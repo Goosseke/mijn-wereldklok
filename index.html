@@ -1,35 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gigantische Neon Klok</title>
     <style>
-        /* Force a black background and bright cyan text */
+        /* Forceert diepzwart en fel neon-blauw */
         html, body {
             background-color: #000000 !important;
             color: #00ffff !important;
             margin: 0;
             padding: 0;
             height: 100vh;
+            width: 100vw;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-family: sans-serif;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden; /* Geen scrollbalken */
         }
+
+        /* De Datum boven de klok */
+        #date {
+            font-size: 4vw; /* Groter dan de vorige versie */
+            text-transform: uppercase;
+            letter-spacing: 0.8rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        /* DE GIGANTISCHE KLOK */
         #clock {
-            font-size: 15vw;
-            font-weight: bold;
+            font-size: 22vw; /* Maximaal groot zonder uit beeld te vallen */
+            font-weight: 900;
+            line-height: 0.9;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            white-space: nowrap; /* Houdt de tijd op één regel */
+        }
+
+        /* Mobiele optimalisatie */
+        @media (max-width: 768px) {
+            #clock { font-size: 25vw; }
+            #date { font-size: 6vw; letter-spacing: 0.3rem; }
         }
     </style>
 </head>
 <body>
+
+    <div id="date">LADEN...</div>
     <div id="clock">00:00:00</div>
 
     <script>
         function update() {
             const now = new Date();
-            document.getElementById('clock').innerHTML = now.toLocaleTimeString();
+            
+            // Tijd (HH:MM:SS)
+            document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL');
+            
+            // Volledige Datum
+            const dateOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('date').textContent = now.toLocaleDateString('nl-NL', dateOptions);
         }
-        setInterval(update, 1000);
+
+        // Direct starten en elke seconde herhalen
         update();
+        setInterval(update, 1000);
     </script>
 </body>
 </html>
