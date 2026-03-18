@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gigantische Neon Klok</title>
+    <title>Gekleurde Konijnenbende Klok</title>
     <style>
-        /* Forceert diepzwart en fel neon-blauw */
+        /* Basisinstellingen: Diepzwart en schoon wit voor de tekst */
         html, body {
             background-color: #000000 !important;
-            color: #00ffff !important;
+            color: #ffffff !important; /* Tekst is nu wit */
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -18,45 +18,207 @@
             align-items: center;
             justify-content: center;
             font-family: 'Courier New', Courier, monospace;
-            overflow: hidden; /* Geen scrollbalken */
+            overflow: hidden; /* Voorkomt scrollbalken */
         }
 
-        /* De Datum boven de klok */
+        /* Container voor de klok */
+        .stage {
+            text-align: center;
+            position: relative;
+            z-index: 5; /* Zorgt dat de klok altijd goed zichtbaar is */
+        }
+
         #date {
-            font-size: 4vw; /* Groter dan de vorige versie */
+            font-size: 3vw;
             text-transform: uppercase;
-            letter-spacing: 0.8rem;
-            margin-bottom: 20px;
-            opacity: 0.7;
+            letter-spacing: 0.6rem;
+            margin-bottom: 5px;
+            opacity: 0.7; /* Iets minder fel dan de klok */
         }
 
-        /* DE GIGANTISCHE KLOK */
         #clock {
-            font-size: 20vw; /* Maximaal groot zonder uit beeld te vallen */
+            font-size: 18vw;
             font-weight: 900;
-            line-height: 0.9;
-            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-            white-space: nowrap; /* Houdt de tijd op één regel */
+            line-height: 1;
+            white-space: nowrap;
+            /* Subtiele witte gloed */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* --- DE KONIJNEN (Basisstijl) --- */
+        
+        .bunny {
+            position: absolute;
+            bottom: 20%;
+            width: 50px;
+            height: 40px;
+            border-radius: 50% 50% 10px 10px;
+            z-index: 10;
+        }
+
+        /* Oortjes */
+        .bunny::before, .bunny::after {
+            content: '';
+            position: absolute;
+            top: -28px;
+            width: 15px;
+            height: 35px;
+            border-radius: 50% 50% 0 0;
+            transform-origin: bottom center;
+        }
+        
+        /* Linkeroor */
+        .bunny::before { left: 8px; transform: rotate(-15deg); }
+        
+        /* Rechteroor */
+        .bunny::after { right: 8px; transform: rotate(15deg); }
+
+        /* Staartje */
+        .bunny-tail {
+            position: absolute;
+            bottom: 8px;
+            left: -10px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+
+        /* --- UNIEKE KLEUREN VOOR ELK KONIJN --- */
+        
+        /* Konijn 1: Neon Groen */
+        .b1 { 
+            background-color: #33ff00; 
+            box-shadow: 0 0 15px rgba(51, 255, 0, 0.5); /* Groene gloed */
+        }
+        .b1::before, .b1::after, .b1 .bunny-tail { background-color: #33ff00; }
+
+        /* Konijn 2: Neon Roze */
+        .b2 { 
+            background-color: #ff00ff; 
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5); /* Roze gloed */
+        }
+        .b2::before, .b2::after, .b2 .bunny-tail { background-color: #ff00ff; }
+
+        /* Konijn 3: Neon Geel */
+        .b3 { 
+            background-color: #ffff00; 
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.5); /* Gele gloed */
+        }
+        .b3::before, .b3::after, .b3 .bunny-tail { background-color: #ffff00; }
+
+        /* Konijn 4 (Nieuw!): Neon Oranje */
+        .b4 { 
+            background-color: #ff9900; 
+            box-shadow: 0 0 15px rgba(255, 153, 0, 0.5); /* Oranje gloed */
+        }
+        .b4::before, .b4::after, .b4 .bunny-tail { background-color: #ff9900; }
+
+
+        /* --- DE ANIMATIES (Sprongpatronen) --- */
+        
+        @keyframes hopAcrossLarge {
+            0% { left: -150px; transform: translateY(0) rotate(0deg); }
+            15% { transform: translateY(-100px) rotate(-15deg); }
+            30% { transform: translateY(0) rotate(0deg); }
+            50% { left: 50%; transform: translateX(-50%) translateY(-180px) rotate(0deg); }
+            70% { transform: translateY(0) rotate(0deg); }
+            85% { transform: translateY(-100px) rotate(15deg); }
+            100% { left: calc(100% + 150px); transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes hopSmallLow {
+            0% { left: 100%; transform: translateY(0); }
+            10% { transform: translateY(-60px); }
+            20% { transform: translateY(0); }
+            50% { left: 20%; transform: translateY(-80px); }
+            80% { transform: translateY(0); }
+            90% { transform: translateY(-60px); }
+            100% { left: -100px; transform: translateY(0); }
+        }
+        
+        @keyframes hopZigZag {
+            0% { left: -100px; bottom: 20%; transform: translateY(0); }
+            25% { left: 25%; bottom: 10%; transform: translateY(-90px); }
+            50% { left: 50%; bottom: 30%; transform: translateY(-130px); }
+            75% { left: 75%; bottom: 15%; transform: translateY(-90px); }
+            100% { left: calc(100% + 100px); bottom: 20%; transform: translateY(0); }
+        }
+        
+        @keyframes hopBounceBack {
+            0% { left: -100px; transform: scaleX(1); }
+            40% { left: 80%; transform: scaleX(1); }
+            50% { left: 80%; transform: scaleX(-1); translateY(-100px); } /* Draait om en springt */
+            60% { left: 80%; transform: scaleX(-1); }
+            100% { left: -100px; transform: scaleX(-1); }
+        }
+
+        /* --- TOEWIJZEN VAN KONIJNEN --- */
+        
+        /* Konijn 1: Groen, groot over de klok */
+        .b1 { animation: hopAcrossLarge 5s infinite linear; }
+        
+        /* Konijn 2: Roze, klein, snel, de andere kant op */
+        .b2 { 
+            animation: hopSmallLow 3s infinite linear; 
+            animation-delay: 1s;
+            width: 35px; height: 28px;
+            opacity: 0.9;
+        }
+        .b2::before, .b2::after { top: -20px; width: 10px; height: 25px; }
+
+        /* Konijn 3: Geel, zigzag */
+        .b3 { 
+            animation: hopZigZag 6s infinite ease-in-out; 
+            animation-delay: 2s; 
+            width: 45px; height: 35px; 
+        }
+        
+        /* Konijn 4: Oranje, springt heen en weer (Bounce Back) */
+        .b4 { 
+            animation: hopBounceBack 7s infinite linear; 
+            animation-delay: 4s; 
+            width: 40px; height: 32px; 
         }
 
         /* Mobiele optimalisatie */
         @media (max-width: 768px) {
-            #clock { font-size: 25vw; }
-            #date { font-size: 6vw; letter-spacing: 0.3rem; }
+            #clock { font-size: 22vw; }
+            #date { font-size: 5vw; letter-spacing: 0.3rem; }
+            .bunny { width: 35px; height: 28px; }
+            .bunny::before, .bunny::after { top: -20px; width: 10px; height: 25px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="date">LADEN...</div>
-    <div id="clock">00:00:00</div>
+    <div class="stage">
+        <div id="date">LADEN...</div>
+        <div id="clock">00:00:00</div>
+    </div>
+
+    <div class="bunny b1">
+        <div class="bunny-tail"></div>
+    </div>
+    
+    <div class="bunny b2">
+        <div class="bunny-tail"></div>
+    </div>
+    
+    <div class="bunny b3">
+        <div class="bunny-tail"></div>
+    </div>
+    
+    <div class="bunny b4">
+        <div class="bunny-tail"></div>
+    </div>
 
     <script>
         function update() {
             const now = new Date();
             
-            // Tijd (HH:MM:SS)
-            document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL');
+            // Tijd (HH:MM:SS) in Nederlandse stijl
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', timeOptions);
             
             // Volledige Datum
             const dateOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
